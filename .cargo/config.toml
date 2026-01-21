@@ -1,0 +1,13 @@
+[target.riscv32imac-unknown-none-elf]
+runner = "espflash flash --no-stub --monitor --ignore-app-descriptor"
+
+
+[build]
+rustflags = [
+  "-C", "link-arg=-Tld/memory.x",
+]
+
+target = "riscv32imac-unknown-none-elf"
+
+[unstable]
+build-std = ["core"]
