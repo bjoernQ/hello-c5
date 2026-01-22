@@ -2,7 +2,10 @@
 #![no_main]
 
 //use esp_println::println;
-use core::{arch::{asm, global_asm}, panic::PanicInfo};
+use core::{
+    arch::{asm, global_asm},
+    panic::PanicInfo,
+};
 
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
@@ -23,11 +26,28 @@ static HELLO: &[u8] =
 
 #[unsafe(no_mangle)]
 unsafe extern "C" fn main() -> ! {
+    unsafe {
+        unsafe extern "C" {
+            static _bss_start: u32;
+            static _bss_end: u32;
+        }
+
+        let bss_start = &_bss_start as *const u32 as *mut u32;
+        let bss_end = &_bss_end as *const u32 as *mut u32;
+
+        for offset in 0..(bss_end as usize - bss_start as usize) {
+            bss_start.add(offset).write(0);
+        }
+    }
+
     const UART_TX_ONE_CHAR2: u32 = 0x40000058;
 
     let uart_tx_one_char: extern "C" fn(u8) = unsafe { core::mem::transmute(UART_TX_ONE_CHAR2) };
 
     loop {
+        esp_println::println!("Hello, world!");
+        esp_println::println!("Hello, ESP32-C5!");
+
         for byte in HELLO {
             uart_tx_one_char(*byte);
         }
@@ -44,7 +64,6 @@ fn delay(d: u32) {
         }
     }
 }
-
 
 #[unsafe(export_name = "esp_app_desc")]
 #[unsafe(link_section = ".flash.appdesc")]

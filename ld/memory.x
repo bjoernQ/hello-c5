@@ -27,4 +27,35 @@ SECTIONS {
         *(.rodata .rodata.*)
         *(.srodata .srodata.*)
     } > FLASH
+
+    .rwtext : ALIGN(4)
+    {
+        *(.rwtext.literal .rwtext .rwtext.literal.* .rwtext.*)
+    } > RAM
+
+    .data : ALIGN(4)
+    {
+        *(.sdata .sdata.* .sdata2 .sdata2.*);
+        *(.data .data.*);
+        *(.data1)
+    } > RAM
+
+    .bss (NOLOAD) : ALIGN(4)
+    {
+        _bss_start = .;
+        *(.dynsbss)
+        *(.sbss)
+        *(.sbss.*)
+        *(.gnu.linkonce.sb.*)
+        *(.scommon)
+        *(.sbss2)
+        *(.sbss2.*)
+        *(.gnu.linkonce.sb2.*)
+        *(.dynbss)
+        *(.sbss .sbss.* .bss .bss.*);
+        *(.share.mem)
+        *(.gnu.linkonce.b.*)
+        *(COMMON)
+        _bss_end = .;
+    } > RAM
 }
