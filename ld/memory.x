@@ -59,3 +59,5 @@ SECTIONS {
         _bss_end = .;
     } > RAM
 }
+
+_stack_start =  0x4085FFFF;

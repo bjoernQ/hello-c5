@@ -1,16 +1,9 @@
 #![no_std]
 #![no_main]
 
-//use esp_println::println;
-use core::{
-    arch::{asm, global_asm},
-    panic::PanicInfo,
-};
+use core::arch::{asm, global_asm};
 
-#[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
-    loop {}
-}
+use esp_backtrace as _;
 
 global_asm!(
     "

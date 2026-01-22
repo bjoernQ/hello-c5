@@ -5,3 +5,7 @@ edition = "2024"
 
 [dependencies]
 esp-println = { git = "https://github.com/bjoernQ/esp-hal", branch = "esp32c5-println", default-features = false, features = ["esp32c5", "auto", "critical-section"] }
+esp-backtrace = { git = "https://github.com/bjoernQ/esp-hal", branch = "esp32c5-println", features = ["esp32c5", "println", "panic-handler"] }
+
+[profile.release]
+debug = true

@@ -5,6 +5,8 @@ runner = "espflash flash --no-stub --monitor --ignore-app-descriptor"
 [build]
 rustflags = [
   "-C", "link-arg=-Tld/memory.x",
+  "-C", "force-frame-pointers",
+  # "-Cforce-unwind-tables",
 ]
 
 target = "riscv32imac-unknown-none-elf"
